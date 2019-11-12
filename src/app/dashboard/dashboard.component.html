@@ -1,0 +1,5 @@
+<div *ngIf="gameScores">
+  <ul>
+    <li *ngFor="let gameScore of gameScores.gameScores | keyvalue">{{gameScore.value}}</li>
+  </ul>
+</div>
