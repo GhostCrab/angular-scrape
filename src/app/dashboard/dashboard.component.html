@@ -1,5 +1,6 @@
-<div *ngIf="gameScores">
-  <ul>
-    <li *ngFor="let gameScore of gameScores.gameScores | keyvalue">{{gameScore.value}}</li>
-  </ul>
-</div>
+<ag-grid-angular *ngIf="gameScores"
+    style="width: 100%; height: 350px;" 
+    class="ag-theme-balham"
+    [rowData]="rowData" 
+    [columnDefs]="columnDefs">
+</ag-grid-angular>

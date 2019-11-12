@@ -16,10 +16,11 @@ body {
   display: flex;
   flex-direction: row;
 }
-
+/*
 router-outlet + *  {
   padding: 0 16px;
 }
+*/
 
 /* Text */
 
@@ -136,3 +137,10 @@ app-top-bar h1 {
   border-radius: 2px;
   background-color: #EEEEEE;
 }
+
+app-dashboard {
+  width: 100%;
+}
+
+@import "~ag-grid-community/dist/styles/ag-grid.css";
+@import "~ag-grid-community/dist/styles/ag-theme-balham.css";

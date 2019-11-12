@@ -4,6 +4,8 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
+import { AgGridModule } from 'ag-grid-angular';
+
 import { NFLFeedService } from './nfl-feed.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
@@ -13,7 +15,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     HttpClientModule,
     RouterModule.forRoot([
       { path: '', component: DashboardComponent },
-    ])
+    ]),
+    AgGridModule.withComponents([])
   ],
   declarations: [
     AppComponent,
