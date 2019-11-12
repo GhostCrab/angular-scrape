@@ -1,6 +1,30 @@
-<ag-grid-angular *ngIf="gameScores"
-    style="width: 100%; height: 350px;" 
-    class="ag-theme-balham"
-    [rowData]="rowData" 
-    [columnDefs]="columnDefs">
-</ag-grid-angular>
+<p-table 
+  [columns]="gameCols" 
+  [value]="gameRows" 
+  [resizableColumns]="true"
+  dataKey="homeTeam" 
+  [resizableColumns]="true" 
+  [reorderableColumns]="true"
+  selectionMode="single" 
+  [(selection)]="selectedGame" 
+  stateStorage="local" 
+  stateKey="gametablestate-local">
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th *ngFor="let col of columns" 
+              [pSortableColumn]="col.field" 
+              pResizableColumn 
+              pReorderableColumn>
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+            <td *ngFor="let col of columns">
+                    {{rowData[col.field]}}
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

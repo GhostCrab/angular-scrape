@@ -4,7 +4,9 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { AgGridModule } from 'ag-grid-angular';
+import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { TableModule } from 'primeng/table';
 
 import { NFLFeedService } from './nfl-feed.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -13,10 +15,12 @@ import { DashboardComponent } from './dashboard/dashboard.component';
   imports: [
     BrowserModule,
     HttpClientModule,
+    ToastModule,
+    ButtonModule,
+    TableModule,
     RouterModule.forRoot([
       { path: '', component: DashboardComponent },
-    ]),
-    AgGridModule.withComponents([])
+    ])
   ],
   declarations: [
     AppComponent,

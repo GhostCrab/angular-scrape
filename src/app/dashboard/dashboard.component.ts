@@ -1,5 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { GameScores, NFLFeedService } from '../nfl-feed.service';
+import { TableModule } from 'primeng/table';
+
+export interface GameRow {
+    time;
+    homeTeam;
+    homeScore;
+    awayTeam;
+    awayScore;
+}
 
 @Component({
   selector: 'app-dashboard',
@@ -8,15 +17,9 @@ import { GameScores, NFLFeedService } from '../nfl-feed.service';
 })
 export class DashboardComponent implements OnInit {
   error: any;
-  gameScores: GameScores;
-  columnDefs = [
-    {field: 'time' },
-    {field: 'home team' },
-    {field: 'home score' },
-    {field: 'away team' },
-    {field: 'away score' },
-  ];
-  rowData = [];
+  gameRows: GameRow[];
+  gameCols: any[];
+  selectedGame: GameRow;
 
   constructor(private nflFeedService: NFLFeedService) {}
 
@@ -26,17 +29,26 @@ export class DashboardComponent implements OnInit {
         (data: GameScores) => this.processGameScores(data), // success path
         error => this.error = error // error path
       );
+
+    this.gameCols = [
+      { field: 'time', header: 'Time' },
+      { field: 'homeTeam', header: 'Home Team' },
+      { field: 'homeScore', header: 'Home Score' },
+      { field: 'awayTeam', header: 'Away Team' },
+      { field: 'awayScore', header: 'Away Score' },
+    ]
   }
 
   processGameScores(data) {
-    this.gameScores = { ...data }
-    Object.values(this.gameScores.gameScores).forEach(function(game) {
-      this.rowData.push({
-        'time': new Date(game.gameSchedule.isoTime),
-        'home team': game.gameSchedule.homeDisplayName,
-        'home score': game.score.homeTeamScore.pointTotal,
-        'away team': game.gameSchedule.visitorDisplayName,
-        'away score': game.score.visitorTeamScore.pointTotal
+    this.gameRows = [];
+    Object.values(data.gameScores).forEach(function(game) {
+      let date = new Date(game.gameSchedule.isoTime);
+      this.gameRows.push({
+        'time': date.toLocaleString(),
+        'homeTeam': game.gameSchedule.homeDisplayName,
+        'homeScore': (game.score !== null)?game.score.homeTeamScore.pointTotal:null,
+        'awayTeam': game.gameSchedule.visitorDisplayName,
+        'awayScore': (game.score !== null)?game.score.visitorTeamScore.pointTotal:null
       });
     }, this)
   }

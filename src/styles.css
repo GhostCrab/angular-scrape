@@ -142,5 +142,7 @@ app-dashboard {
   width: 100%;
 }
 
-@import "~ag-grid-community/dist/styles/ag-grid.css";
-@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~primeicons/primeicons.css";
+@import "~primeng/resources/themes/nova-light/theme.css";
+@import "~primeng/resources/primeng.min.css";
