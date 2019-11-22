@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { GameScores, NFLFeedService } from '../nfl-feed.service';
 import { TableModule } from 'primeng/table';
 
+import { Game } from './shared/game.model'
+
 export interface GameRow {
     week;
     time;
@@ -19,7 +21,7 @@ export interface GameRow {
 })
 export class DashboardComponent implements OnInit {
   error: any;
-  gameRows: GameRow[];
+  gameRows: Game[];
   gameCols: any[];
 
   constructor(private nflFeedService: NFLFeedService) {}
@@ -36,11 +38,6 @@ export class DashboardComponent implements OnInit {
       { field: 'awayScore', header: 'Away Score' },
       { field: 'ou', header: "Over/Under"}
     ]
-    // this.nflFeedService.getGameScores(1)
-    //   .subscribe(
-    //     (data: GameScores) => this.processGameScores(data), // success path
-    //     error => this.error = error // error path
-    //   );
     
     this.nflFeedService.getDb()
       .subscribe(
@@ -49,40 +46,10 @@ export class DashboardComponent implements OnInit {
       );
   }
 
-  processGameScores(data) {
-    Object.values(data.gameScores).forEach(function(game) {
-      let date = new Date(game.gameSchedule.isoTime);
-      this.gameRows.push({
-        'time': date.toLocaleString(),
-        'homeTeam': game.gameSchedule.homeDisplayName,
-        'homeScore': (game.score !== null)?game.score.homeTeamScore.pointTotal:null,
-        'awayTeam': game.gameSchedule.visitorDisplayName,
-        'awayScore': (game.score !== null)?game.score.visitorTeamScore.pointTotal:null
-      });
-    }, this)
-  }
-
-  processGame(game) {
-    let date = new Date(game.gt);
-    return {
-      'week': game.week,
-      'time': date.toLocaleString(),
-      'homeTeam': game.home.abbr,
-      'homeScore': game.home_score,
-      'awayTeam': game.away.abbr,
-      'awayScore': game.away_score,
-      'ou': game.ou
-    };
-  }
-
   processDb(data) {
     Object.values(data.games).forEach(function(game) {
-      if(game.week === 12) {
-        this.gameRows.push(this.processGame(game));
-        let testgame = Game.fromDb(game);
-        console.log(testgame)
-      } else {
-        this.gameRows.push(this.processGame(game));
+      if(game.week === 10) {
+        this.gameRows.push(Game.fromDb(game));
       }
     }, this)
   }

@@ -1,9 +1,11 @@
+import { Team } from './team.model'
+
 export class Game {
   static fromDb(data) {
     return new this(
       data.id,
-      new Team(data.home),
-      new Team(data.away),
+      Team.fromDb(data.home),
+      Team.fromDb(data.away),
       new Date(data.gt),
       data.week,
       data.season,
@@ -19,7 +21,7 @@ export class Game {
   }
 
   constructor(
-    public game_id: string,
+    public gameId: string,
     public home: Team,
     public away: Team,
     public gt: Date,
@@ -29,8 +31,17 @@ export class Game {
     public spread: number,
     public ou: number,
     public complete: boolean,
-    public home_score: number,
-    public away_score: number,
-    public home_pr: string,
-    public away_pr: string) { }
+    public homeScore: number,
+    public awayScore: number,
+    public homePR: string,
+    public awayPR: string) { }
+
+  tableData(field) {
+    switch(field) {
+      case 'time': return this.gt.toLocaleString();
+      case 'homeTeam': return this.home.abbr;
+      case 'awayTeam': return this.away.abbr;
+    }
+    return this[field];
+  }
 }

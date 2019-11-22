@@ -21,9 +21,9 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
-        <tr [pSelectableRow]="rowData">
-            <td *ngFor="let col of columns" [ngClass]="{'winner': false}">
-                    {{rowData[col.field]}}
+        <tr>
+            <td *ngFor="let col of columns" >
+              {{rowData.tableData(col.field)}}
             </td>
         </tr>
     </ng-template>
