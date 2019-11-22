@@ -79,7 +79,10 @@ export class DashboardComponent implements OnInit {
     Object.values(data.games).forEach(function(game) {
       if(game.week === 12) {
         this.gameRows.push(this.processGame(game));
-        console.log(game)
+        let testgame = Game.fromDb(game);
+        console.log(testgame)
+      } else {
+        this.gameRows.push(this.processGame(game));
       }
     }, this)
   }

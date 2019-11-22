@@ -22,7 +22,7 @@
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
         <tr [pSelectableRow]="rowData">
-            <td *ngFor="let col of columns">
+            <td *ngFor="let col of columns" [ngClass]="{'winner': false}">
                     {{rowData[col.field]}}
             </td>
         </tr>
