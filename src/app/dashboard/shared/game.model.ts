@@ -21,7 +21,7 @@ export class Game {
   }
 
   constructor(
-    public gameId: string,
+    public id: string,
     public home: Team,
     public away: Team,
     public gt: Date,
@@ -38,10 +38,64 @@ export class Game {
 
   tableData(field) {
     switch(field) {
-      case 'time': return this.gt.toLocaleString();
-      case 'homeTeam': return this.home.abbr;
-      case 'awayTeam': return this.away.abbr;
+      case 'time': return this.gt.toLocaleString()
+      case 'homeTeam': return this.home.abbr
+      case 'awayTeam': return this.away.abbr
+      case 'spread': return this.fav.abbr + " " + this.spread
+      case 'ou': 
+        let oustr = "+" + this.ou
+        if(this.complete)
+          oustr += " (" + (this.homeScore + this.awayScore) + ")"
+        return oustr
     }
     return this[field];
+  }
+
+  tableFieldStyle(field) {
+    let classes = 'gameCell'
+    switch(field) {
+      case 'homeTeam':
+      case 'homeScore':
+        classes += " " + this.decideColorTeam(this.home, this.homeScore, this.away, this.awayScore)
+        break
+      
+      case 'awayTeam':
+      case 'awayScore':
+        classes += " " + this.decideColorTeam(this.away, this.awayScore, this.home, this.homeScore)
+        break
+
+      // case 'ou':
+      //   return this.decideColorOU()
+    }
+
+    return classes;
+  }
+
+  decideColorTeam(me, myScore, other, otherScore) {
+    if(!this.complete)
+      return void 0
+
+    let spreadVal = this.spread
+    if(me.id !== this.fav.id)
+      spreadVal = Math.abs(spreadVal)
+
+    if(myScore + spreadVal > otherScore)
+      return 'highlightgreen'
+    else if(myScore + spreadVal < otherScore)
+      return 'highlightred'
+
+    return void 0
+  }
+
+  decideColorOU() {
+    if(!this.complete)
+      return void 0
+
+    if(this.homeScore + this.awayScore > this.ou)
+      return 'highlightgreen'
+    else if(this.homeScore + this.awayScore < this.ou)
+      return 'highlightred'
+    
+    return void 0
   }
 }

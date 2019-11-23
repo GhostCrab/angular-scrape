@@ -36,6 +36,7 @@ export class DashboardComponent implements OnInit {
       { field: 'homeScore', header: 'Home Score' },
       { field: 'awayTeam', header: 'Away Team' },
       { field: 'awayScore', header: 'Away Score' },
+      { field: 'spread', header: 'Spread' },
       { field: 'ou', header: "Over/Under"}
     ]
     

@@ -21,8 +21,10 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
-        <tr>
-            <td *ngFor="let col of columns" >
+        <tr [ngClass]="'gameCell'">
+            <td *ngFor="let col of columns" 
+            [ngClass]="rowData.tableFieldStyle(col.field)"
+            >
               {{rowData.tableData(col.field)}}
             </td>
         </tr>

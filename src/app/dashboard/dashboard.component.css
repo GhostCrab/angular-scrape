@@ -1,0 +1,11 @@
+.highlightgreen { 
+  background-color: #56ff5640 !important;
+}
+
+.highlightred { 
+  background-color: #ff666640 !important;
+}
+
+.gameCell {
+  font-family: monospace;
+}

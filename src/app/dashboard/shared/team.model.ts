@@ -10,7 +10,7 @@ export class Team {
   }
 
   constructor(
-    public team_id: number,
+    public id: number,
     public name: string,
     public city: string,
     public abbr: string,
