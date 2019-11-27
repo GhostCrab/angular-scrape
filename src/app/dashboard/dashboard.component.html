@@ -1,3 +1,4 @@
+<p-dropdown [options]="weeks" [(ngModel)]="week" optionLabel="display" (ngModelChange)="onChange($event)"></p-dropdown>
 <p-table 
   [columns]="gameCols" 
   [value]="gameRows" 
@@ -5,10 +6,8 @@
   dataKey="homeTeam" 
   [resizableColumns]="true" 
   [reorderableColumns]="true"
-  selectionMode="single" 
-  [(selection)]="selectedGame" 
-  stateStorage="local" 
-  stateKey="gametablestate-local">
+  (sortFunction)="customSort($event)"
+  [customSort]="true" >
     <ng-template pTemplate="header" let-columns>
         <tr>
             <th *ngFor="let col of columns" 
@@ -16,7 +15,7 @@
               pResizableColumn 
               pReorderableColumn>
                 {{col.header}}
-                <p-sortIcon [field]="col.field"></p-sortIcon>
+                <p-sortIcon [field]="col.field" *ngIf="col.sortable"></p-sortIcon>
             </th>
         </tr>
     </ng-template>

@@ -20,6 +20,36 @@ export class Game {
     )
   }
 
+  static TableCols = [
+      { field: 'week', header: 'Week', sortable: false },
+      { field: 'time', header: 'Time', sortable: true },      
+      { field: 'homeTeam', header: 'Home Team', sortable: true },
+      { field: 'homeScore', header: 'Home Score', sortable: true },
+      { field: 'awayTeam', header: 'Away Team', sortable: true },
+      { field: 'awayScore', header: 'Away Score', sortable: true },
+      { field: 'spread', header: 'Spread', sortable: true },
+      { field: 'ou', header: "Over/Under", sortable: true}
+    ]
+
+  static customSort(data1, data2, field) {
+    let value1 = data1.tableData(field);
+    let value2 = data1.tableData(field);
+    let result = null;
+
+    if (value1 == null && value2 != null)
+      result = -1;
+    else if (value1 != null && value2 == null)
+      result = 1;
+    else if (value1 == null && value2 == null)
+      result = 0;
+    else if (typeof value1 === 'string' && typeof value2 === 'string')
+      result = value1.localeCompare(value2);
+    else
+      result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+
+    return (event.order * result);
+  }
+
   constructor(
     public id: string,
     public home: Team,
@@ -41,12 +71,24 @@ export class Game {
       case 'time': return this.gt.toLocaleString()
       case 'homeTeam': return this.home.abbr
       case 'awayTeam': return this.away.abbr
-      case 'spread': return this.fav.abbr + " " + this.spread
+      case 'spread': 
+        if(this.spread == 0)
+          return "PICK"
+        return this.fav.abbr + " " + this.spread.toString()
       case 'ou': 
         let oustr = "+" + this.ou
         if(this.complete)
           oustr += " (" + (this.homeScore + this.awayScore) + ")"
         return oustr
+    }
+    return this[field];
+  }
+
+  sortData(field) {
+    switch(field) {
+      case 'time': return this.gt
+      case 'homeTeam': return this.home.abbr
+      case 'awayTeam': return this.away.abbr
     }
     return this[field];
   }

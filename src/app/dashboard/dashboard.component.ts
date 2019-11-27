@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { GameScores, NFLFeedService } from '../nfl-feed.service';
-import { TableModule } from 'primeng/table';
 
+import { GameScores, NFLFeedService } from '../nfl-feed.service';
 import { Game } from './shared/game.model'
 
-export interface GameRow {
+interface GameRow {
     week;
     time;
     homeTeam;
@@ -14,48 +13,84 @@ export interface GameRow {
     ou;
 }
 
+interface Week {
+  id: number;
+  display: string;
+}
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
-  error: any;
-  gameRows: Game[];
-  gameCols: any[];
+export class DashboardComponent implements OnInit{
+  error: any = null
+  gameRows: Game[] = []
+  gameCols = Game.TableCols
+  db: string = null
+
+  weeks: Week[] = []
+  week: Week = null
 
   constructor(private nflFeedService: NFLFeedService) {}
 
   ngOnInit() {
-    this.gameRows = [];
-
-    this.gameCols = [
-      { field: 'week', header: 'Week' },
-      { field: 'time', header: 'Time' },      
-      { field: 'homeTeam', header: 'Home Team' },
-      { field: 'homeScore', header: 'Home Score' },
-      { field: 'awayTeam', header: 'Away Team' },
-      { field: 'awayScore', header: 'Away Score' },
-      { field: 'spread', header: 'Spread' },
-      { field: 'ou', header: "Over/Under"}
-    ]
-    
     this.nflFeedService.getDb()
       .subscribe(
         (data) => this.processDb(data), // success path
         error => this.error = error // error path
-      );
+      )
   }
 
-  processDb(data) {
-    Object.values(data.games).forEach(function(game) {
-      if(game.week === 10) {
+  onChange() {
+    this.gameRows = []
+    console.log("onChange")
+    Object.values(this.db.games).forEach(function(game) {
+      if(game.week === this.week.id) {
         this.gameRows.push(Game.fromDb(game));
       }
     }, this)
   }
 
+  processDb(data) {
+    console.log("processDb")
+    this.weeks = []
+    this.db = data
+    Object.values(data.games).forEach(function(game) {
+      if(!this.weeks.some(e => e.id == game.week)) {
+        this.weeks.push({id: game.week, display: game.week.toString()})
+      }
+    }, this)
+
+    this.week = this.weeks[0]
+    
+    this.onChange()
+  }
+
+  customSort(event: SortEvent) {
+    console.log(event)
+    event.data.sort((data1, data2) => {
+      let value1 = data1.sortData(event.field);
+      let value2 = data2.sortData(event.field);
+      
+      let result = null;
+
+      if (value1 == null && value2 != null)
+        result = -1;
+      else if (value1 != null && value2 == null)
+        result = 1;
+      else if (value1 == null && value2 == null)
+        result = 0;
+      else if (typeof value1 === 'string' && typeof value2 === 'string')
+        result = value1.localeCompare(value2);
+      else
+        result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+
+      return (event.order * result);
+    });
+  }
+
   makeError() {
-    this.nflFeedService.makeIntentionalError().subscribe(null, error => this.error = error );
+    this.nflFeedService.makeIntentionalError().subscribe(null, error => this.error = error )
   }
 }
