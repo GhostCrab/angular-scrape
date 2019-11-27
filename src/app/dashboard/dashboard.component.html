@@ -1,4 +1,8 @@
+<p-button [ngClass]="'navIcon'" icon="pi pi-angle-double-left" (onClick)="handleFirstClick($event)"></p-button>
+<p-button [ngClass]="'navIcon'" icon="pi pi-angle-left" (onClick)="handlePrevClick($event)"></p-button>
 <p-dropdown [options]="weeks" [(ngModel)]="week" optionLabel="display" (ngModelChange)="onChange($event)"></p-dropdown>
+<p-button [ngClass]="'navIcon'" icon="pi pi-angle-right" (onClick)="handleNextClick($event)"></p-button>
+<p-button [ngClass]="'navIcon'" icon="pi pi-angle-double-right" (onClick)="handleLastClick($event)"></p-button>
 <p-table 
   [columns]="gameCols" 
   [value]="gameRows" 

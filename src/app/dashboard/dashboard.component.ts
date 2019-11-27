@@ -52,6 +52,22 @@ export class DashboardComponent implements OnInit{
     }, this)
   }
 
+  handleFirstClick(event: MouseEvent) {
+    
+  }
+
+  handlePrevClick(event: MouseEvent) {
+    
+  }
+
+  handleNextClick(event: MouseEvent) {
+    
+  }
+
+  handleLastClick(event: MouseEvent) {
+    
+  }
+
   processDb(data) {
     console.log("processDb")
     this.weeks = []
@@ -68,7 +84,6 @@ export class DashboardComponent implements OnInit{
   }
 
   customSort(event: SortEvent) {
-    console.log(event)
     event.data.sort((data1, data2) => {
       let value1 = data1.sortData(event.field);
       let value2 = data2.sortData(event.field);
