@@ -29,7 +29,7 @@ body .ui-table .ui-table-tbody .highlightred {
 
 .midbtn .ui-button {
   border-radius: 0px;
-}
+} 
 
 .rightbtn .ui-button {
   border-top-left-radius: 0px;
@@ -38,12 +38,15 @@ body .ui-table .ui-table-tbody .highlightred {
 
 body .ui-button {
   border: none;
-  margin: none;
-  padding: none;
+}
+
+body .ui-button:enabled:focus {
+  box-shadow: none;
 }
 
 body .ui-dropdown {
   border-radius: 0px;
+  border: none;
 }
 
 body .ui-dropdown-label {
@@ -51,6 +54,13 @@ body .ui-dropdown-label {
 }
 
 .testcls {
-  margin: 8px;
-  height: 30px;
+  margin: 2px;
+  height: 31px;
+  border: 1px #616161 solid;
+  width: fit-content;
+  border-radius: 4px;
+}
+
+body .ui-dropdown-panel .ui-dropdown-items .ui-dropdown-item.ui-state-highlight .ng-star-inserted {
+  color: white;
 }
