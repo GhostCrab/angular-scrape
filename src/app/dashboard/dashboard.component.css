@@ -1,11 +1,45 @@
-.highlightgreen { 
-  background-color: #56ff5640 !important;
+body .ui-table .ui-table-tbody .highlightgreen { 
+  background-color: #56ff5640;
 }
 
-.highlightred { 
-  background-color: #ff666640 !important;
+body .ui-table .ui-table-tbody .highlightred { 
+  background-color: #ff666640;
 }
 
 .gameCell {
   font-family: monospace;
+}
+
+.navIcon .pi {
+  color: white;
+}
+
+body .ui-button {
+  height: 100%;
+}
+
+.leftbtn .ui-button {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.midbtn .ui-button {
+  border-radius: 0px;
+}
+
+.rightbtn .ui-button {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+body .ui-dropdown {
+  border-radius: 0px;
+}
+
+body .ui-dropdown-label {
+  border-radius: 0px;
+}
+
+.testcls {
+  height: 100px;
 }
