@@ -14,7 +14,11 @@ body .ui-table .ui-table-tbody .highlightred {
   color: white;
 }
 
-body .ui-button {
+.navIcon {
+  height: 100%;
+}
+
+.navIcon .ui-button {
   height: 100%;
 }
 
@@ -32,6 +36,12 @@ body .ui-button {
   border-bottom-left-radius: 0px;
 }
 
+body .ui-button {
+  border: none;
+  margin: none;
+  padding: none;
+}
+
 body .ui-dropdown {
   border-radius: 0px;
 }
@@ -41,5 +51,6 @@ body .ui-dropdown-label {
 }
 
 .testcls {
-  height: 100px;
+  margin: 8px;
+  height: 30px;
 }

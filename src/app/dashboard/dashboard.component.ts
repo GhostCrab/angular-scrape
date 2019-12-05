@@ -48,25 +48,40 @@ export class DashboardComponent implements OnInit{
     console.log("onChange")
     Object.values(this.db.games).forEach(function(game) {
       if(game.week === this.week.id) {
-        this.gameRows.push(Game.fromDb(game));
+        this.gameRows.push(Game.fromDb(game))
       }
     }, this)
   }
 
   handleFirstClick(event: MouseEvent) {
-    
+    if(this.week.id === this.weeks[0].id)
+      return
+    this.week = this.weeks[0]
+    this.onChange()
   }
 
   handlePrevClick(event: MouseEvent) {
-    
+    let weekIndex = this.weeks.findIndex(w => w.id === this.week.id)
+    if(weekIndex <= 0)
+      return
+    this.week = this.weeks[weekIndex - 1]
+    this.onChange()
   }
 
   handleNextClick(event: MouseEvent) {
-    
+    let weekIndex = this.weeks.findIndex(w => w.id === this.week.id)
+    if(weekIndex === -1 || weekIndex >= this.weeks.length -1)
+      return
+    this.week = this.weeks[weekIndex + 1]
+    this.onChange()
   }
 
   handleLastClick(event: MouseEvent) {
+    if(this.week.id === this.weeks[this.weeks.length - 1].id)
+      return
     
+    this.week = this.weeks[this.weeks.length - 1]
+    this.onChange()
   }
 
   processDb(data) {
