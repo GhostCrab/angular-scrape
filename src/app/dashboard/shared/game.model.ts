@@ -2,6 +2,8 @@ import { Team } from './team.model'
 
 export class Game {
   static fromDb(data) {
+    if(!data)
+      return null;
     return new this(
       data.id,
       Team.fromDb(data.home),
@@ -71,11 +73,15 @@ export class Game {
       case 'time': return this.gt.toLocaleString()
       case 'homeTeam': return this.home.abbr
       case 'awayTeam': return this.away.abbr
-      case 'spread': 
+      case 'spread':
+        if(!this.fav)
+          return null
         if(this.spread == 0)
           return "PICK"
         return this.fav.abbr + " " + this.spread.toString()
-      case 'ou': 
+      case 'ou':
+        if(!this.ou)
+          return null
         let oustr = "+" + this.ou
         if(this.complete)
           oustr += " (" + (this.homeScore + this.awayScore) + ")"

@@ -45,7 +45,6 @@ export class DashboardComponent implements OnInit{
 
   onChange() {
     this.gameRows = []
-    console.log("onChange")
     Object.values(this.db.games).forEach(function(game) {
       if(game.week === this.week.id) {
         this.gameRows.push(Game.fromDb(game))
@@ -85,7 +84,6 @@ export class DashboardComponent implements OnInit{
   }
 
   processDb(data) {
-    console.log("processDb")
     this.weeks = []
     this.db = data
     Object.values(data.games).forEach(function(game) {

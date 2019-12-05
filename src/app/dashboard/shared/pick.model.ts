@@ -1,5 +1,7 @@
 export class Pick {
   static fromDb(data) {
+    if(!data)
+      return null;
     return new this(
       User.fromDb(data.user),
       User.fromDb(data.team),

@@ -1,5 +1,7 @@
 export class User {
   static fromDb(data) {
+    if(!data)
+      return null;
     return new this(
       data.id,
       data.email,
