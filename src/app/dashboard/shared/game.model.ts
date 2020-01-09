@@ -70,7 +70,16 @@ export class Game {
 
   tableData(field) {
     switch(field) {
-      case 'time': return this.gt.toLocaleString()
+      case 'time':
+        return this.gt.toLocaleString("en-US",
+          {
+            weekday:"short",
+            month:"numeric",
+            day:"numeric",
+            hour:"numeric",
+            minute:"numeric",
+          }
+        )
       case 'homeTeam': return this.home.abbr
       case 'awayTeam': return this.away.abbr
       case 'spread':
