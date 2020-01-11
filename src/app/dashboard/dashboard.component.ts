@@ -3,16 +3,6 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { GameScores, NFLFeedService } from '../nfl-feed.service';
 import { Game } from './shared/game.model'
 
-interface GameRow {
-    week;
-    time;
-    homeTeam;
-    homeScore;
-    awayTeam;
-    awayScore;
-    ou;
-}
-
 interface Week {
   id: number;
   display: string;

@@ -17,4 +17,8 @@ export class Team {
     public city: string,
     public abbr: string,
     public active: boolean) { }
+
+  isOU() {
+    
+  }
 }
