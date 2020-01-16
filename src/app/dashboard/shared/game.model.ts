@@ -49,6 +49,33 @@ export class Game {
     public homePR: string,
     public awayPR: string) { }
 
+  get favScore(): number {
+    if(!this.complete)
+      return void 0
+
+    if(this.home.id === this.fav.id)
+      return this.homeScore
+    else
+      return this.awayScore
+  }
+
+  get undScore(): number {
+    if(!this.complete)
+      return void 0
+
+    if(this.home.id === this.fav.id)
+      return this.awayScore
+    else
+      return this.homeScore
+  }
+
+  get totalScore(): number {
+    if(!this.complete)
+      return void 0
+
+    return this.homeScore + this.awayScore
+  }
+
   tableData(field) {
     switch(field) {
       case 'time':
@@ -94,12 +121,12 @@ export class Game {
     switch(field) {
       case 'homeTeam':
       case 'homeScore':
-        classes += " " + this.decideColorTeam(this.home, this.homeScore, this.away, this.awayScore)
+        classes += " " + this.decideColorTeam(this.home)
         break
       
       case 'awayTeam':
       case 'awayScore':
-        classes += " " + this.decideColorTeam(this.away, this.awayScore, this.home, this.homeScore)
+        classes += " " + this.decideColorTeam(this.away)
         break
 
       // case 'ou':
@@ -109,31 +136,42 @@ export class Game {
     return classes;
   }
 
-  decideColorTeam(me, myScore, other, otherScore) {
+  decideColorTeam(team) {
     if(!this.complete)
       return void 0
 
-    let spreadVal = this.spread
-    if(me.id !== this.fav.id)
-      spreadVal = Math.abs(spreadVal)
+    let result = this.result(team)
 
-    if(myScore + spreadVal > otherScore)
+    if(result === true)
       return 'highlightgreen'
-    else if(myScore + spreadVal < otherScore)
+    if(result === false)
       return 'highlightred'
 
     return void 0
   }
 
-  decideColorOU() {
+  result(team) {
     if(!this.complete)
       return void 0
 
-    if(this.homeScore + this.awayScore > this.ou)
-      return 'highlightgreen'
-    else if(this.homeScore + this.awayScore < this.ou)
-      return 'highlightred'
-    
+    if(team.isOU()) {
+      if(team.isUnd()) {
+        if(this.totalScore < this.ou) return true
+        if(this.totalScore > this.ou) return false
+      } else {  
+        if(this.totalScore < this.ou) return false
+        if(this.totalScore > this.ou) return true
+      }
+    } else {
+      let favScoreAdjusted = this.favScore + this.spread
+      if(this.fav.id === team.id) {
+        if(favScoreAdjusted > this.undScore) return true
+        if(favScoreAdjusted < this.undScore) return false
+      } else {
+        if(favScoreAdjusted > this.undScore) return false
+        if(favScoreAdjusted < this.undScore) return true
+      }
+    }
     return void 0
   }
 }

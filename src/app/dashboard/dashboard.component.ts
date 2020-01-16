@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { GameScores, NFLFeedService } from '../nfl-feed.service';
 import { Game } from './shared/game.model'
+import { Pick } from './shared/pick.model'
 
 interface Week {
   id: number;
@@ -18,6 +19,8 @@ export class DashboardComponent implements OnInit{
   error: any = null
   gameRows: Game[] = []
   gameCols = Game.TableCols
+  pickRows: Pick[] = []
+  pickCols = Pick.TableCols
   db: string = null
 
   weeks: Week[] = []
@@ -38,6 +41,12 @@ export class DashboardComponent implements OnInit{
     Object.values(this.db.games).forEach(function(game) {
       if(game.week === this.week.id) {
         this.gameRows.push(Game.fromDb(game))
+      }
+    }, this)
+
+    Object.values(this.db.picks).forEach(function(pick) {
+      if(pick.game.week === this.week.id) {
+        this.pickRows.push(Pick.fromDb(pick))
       }
     }, this)
   }

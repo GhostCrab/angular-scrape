@@ -1,19 +1,22 @@
+import { User } from './user.model'
+import { Team } from './team.model'
+import { Game } from './game.model'
+
 export class Pick {
   static fromDb(data) {
     if(!data)
       return null;
     return new this(
       User.fromDb(data.user),
-      User.fromDb(data.team),
-      User.fromDb(data.game)
+      Team.fromDb(data.team),
+      Game.fromDb(data.game)
     );
   }
 
   static TableCols = [
       { field: 'week', header: 'Week', sortable: false },
       { field: 'user', header: 'User', sortable: true },      
-      { field: 'pick', header: 'Pick', sortable: true },
-      { field: 'result', header: 'Result', sortable: true },
+      { field: 'pick', header: 'Pick', sortable: true }
     ]
 
   constructor(
@@ -26,15 +29,29 @@ export class Pick {
       case 'week': return this.game.week
       case 'user': return this.user.name
       case 'pick':
-        if(!this.game.fav)
-          return null
-        let spread = 0
-        if(this.game.fav.id === this.team.id)
-          spread = this.game.spread
-        else
-          spread = -(this.game.spread)
-        return this.team.abbr + " " + spread.toString()
+        if(this.team.isOU()) {
+          return this.team.abbr + " +" + this.game.ou
+        } else {
+          if(!this.game.fav)
+            return void 0
+          let spread = this.game.spread
+          if(this.game.fav.id !== this.team.id)
+            spread = -spread
+          return this.team.abbr + " " + spread.toString()
+        }
+        break
     }
     return this[field];
+  }
+
+  tableFieldStyle(field) {
+    let classes = 'gameCell'
+    switch(field) {
+      case 'pick':
+        classes += " " + this.game.decideColorTeam(this.team)
+        break
+    }
+
+    return classes;
   }
 }

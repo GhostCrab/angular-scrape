@@ -18,7 +18,15 @@ export class Team {
     public abbr: string,
     public active: boolean) { }
 
+  isUnd() {
+    return this.abbr === 'UND'
+  }
+
+  isOvr() {
+    return this.abbr === 'OVR'
+  }
+
   isOU() {
-    
+    return this.isUnd() || this.isOvr()
   }
 }

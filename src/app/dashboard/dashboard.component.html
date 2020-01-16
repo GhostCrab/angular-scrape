@@ -35,3 +35,34 @@
         </tr>
     </ng-template>
 </p-table>
+
+<p-table 
+  [columns]="pickCols" 
+  [value]="pickRows" 
+  [resizableColumns]="true"
+  dataKey="pick" 
+  [resizableColumns]="true" 
+  [reorderableColumns]="true"
+  (sortFunction)="customSort($event)"
+  [customSort]="true" >
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th *ngFor="let col of columns" 
+              [pSortableColumn]="col.field" 
+              pResizableColumn 
+              pReorderableColumn>
+                {{col.header}}
+                <p-sortIcon [field]="col.field" *ngIf="col.sortable"></p-sortIcon>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr [ngClass]="'gameCell'">
+            <td *ngFor="let col of columns" 
+            [ngClass]="rowData.tableFieldStyle(col.field)"
+            >
+              {{rowData.tableData(col.field)}}
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
