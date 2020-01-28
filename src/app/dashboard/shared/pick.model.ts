@@ -65,4 +65,8 @@ export class Pick {
 
     return classes;
   }
+
+  result() {
+    this.game.result(this.team)
+  }
 }

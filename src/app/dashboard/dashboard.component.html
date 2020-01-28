@@ -59,7 +59,7 @@
     <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
         <tr class="ui-widget-header" *ngIf="pickGroupMetadata[rowData.metaData()].index === rowIndex">
           <td colspan="3">
-            <span style="font-weight:bold">{{rowData.metaData()}} {{pickGroupMetadata[rowData.metaData()].index}}</span>
+            <span style="font-weight:bold">{{rowData.metaData()}} {{pickGroupMetadata[rowData.metaData()].win}}/{{pickGroupMetadata[rowData.metaData()].win + pickGroupMetadata[rowData.metaData()].loss}}</span>
           </td>
         </tr>
         <tr [ngClass]="'gameCell'">

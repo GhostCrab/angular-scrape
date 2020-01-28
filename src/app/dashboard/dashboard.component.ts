@@ -111,7 +111,7 @@ export class DashboardComponent implements OnInit{
       if (value1 == null && value2 != null)
         result = -1;
       else if (value1 != null && value2 == null)
-        result = 1;
+        result = 1; 
       else if (value1 == null && value2 == null)
         result = 0;
       else if (typeof value1 === 'string' && typeof value2 === 'string')
@@ -130,16 +130,32 @@ export class DashboardComponent implements OnInit{
       this.pickRows.forEach(function(rowData, idx) {
         let user = rowData.metaData();
         if (previousRowData === null) {
-          this.pickGroupMetadata[user] = { index: 0, size: 1 };
+          this.pickGroupMetadata[user] = {index: 0, size: 1, win: 0, loss: 0, total: 0, style: void 0};
         }
         else {
-          let previousRowUser = previousRowData.metaData();
-          if (user === previousRowUser)
+          if (user === previousRowData.metaData())
             this.pickGroupMetadata[user].size++;
           else
-            this.pickGroupMetadata[user] = { index: idx, size: 1 };
+            this.pickGroupMetadata[user] = {index: idx, size: 1, win: 0, loss: 0, total: 0, style: void 0};
+        }
+        if (rowData.game.complete) {
+          this.pickGroupMetadata[user].total++
+          if (rowData.result() === true) {
+            this.pickGroupMetadata[user].win++
+          } else if (rowData.result() === false) {
+            this.pickGroupMetadata[user].loss++
+          }
         }
         previousRowData = rowData
+      }, this)
+
+      this.pickGroupMetadata.forEach(function(pickGroup) {
+        if (pickGroup.size === pickGroup.total) {
+          if (pickGroup.loss === 0)
+            pickGroup.style = 'highlightgreen'
+          else
+            pickGroup.style = 'highlightred'
+        }
       })
     }
   }
