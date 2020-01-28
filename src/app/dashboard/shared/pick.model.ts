@@ -14,8 +14,8 @@ export class Pick {
   }
 
   static TableCols = [
+      { field: 'user', header: 'User', sortable: true },
       { field: 'week', header: 'Week', sortable: false },
-      { field: 'user', header: 'User', sortable: true },      
       { field: 'pick', header: 'Pick', sortable: true }
     ]
 
@@ -23,6 +23,10 @@ export class Pick {
     public user: User,
     public team: Team,
     public game: Game) { }
+
+  metaData() {
+    return this.user.name
+  }
 
   tableData(field) {
     switch(field) {
@@ -42,6 +46,13 @@ export class Pick {
         break
     }
     return this[field];
+  }
+
+  sortData(field) {
+    switch(field) {
+      case 'pick': return this.game.gt
+    }
+    return this.tableData[field];
   }
 
   tableFieldStyle(field) {

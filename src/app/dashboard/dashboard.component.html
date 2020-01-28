@@ -1,4 +1,4 @@
-<div class="testcls">
+<!-- <div class="testcls">
 <p-button [ngClass]="'navIcon leftbtn'" icon="pi pi-angle-double-left" (onClick)="handleFirstClick($event)"></p-button>
 <p-button [ngClass]="'navIcon midbtn'" icon="pi pi-angle-left" (onClick)="handlePrevClick($event)"></p-button>
 <p-dropdown [options]="weeks" [(ngModel)]="week" optionLabel="display" (ngModelChange)="onChange($event)"></p-dropdown>
@@ -34,7 +34,7 @@
             </td>
         </tr>
     </ng-template>
-</p-table>
+</p-table> -->
 
 <p-table 
   [columns]="pickCols" 
@@ -56,13 +56,17 @@
             </th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-rowData let-columns="columns">
+    <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+        <tr class="ui-widget-header" *ngIf="pickGroupMetadata[rowData.metaData()].index === rowIndex">
+          <td colspan="3">
+            <span style="font-weight:bold">{{rowData.metaData()}} {{pickGroupMetadata[rowData.metaData()].index}}</span>
+          </td>
+        </tr>
         <tr [ngClass]="'gameCell'">
-            <td *ngFor="let col of columns" 
-            [ngClass]="rowData.tableFieldStyle(col.field)"
-            >
-              {{rowData.tableData(col.field)}}
-            </td>
+          <td *ngFor="let col of columns" 
+            [ngClass]="rowData.tableFieldStyle(col.field)">
+            {{rowData.tableData(col.field)}}
+          </td>
         </tr>
     </ng-template>
 </p-table>

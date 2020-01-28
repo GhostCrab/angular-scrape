@@ -21,6 +21,7 @@ export class DashboardComponent implements OnInit{
   gameCols = Game.TableCols
   pickRows: Pick[] = []
   pickCols = Pick.TableCols
+  pickGroupMetadata: any;
   db: string = null
 
   weeks: Week[] = []
@@ -49,6 +50,10 @@ export class DashboardComponent implements OnInit{
         this.pickRows.push(Pick.fromDb(pick))
       }
     }, this)
+    this.pickRows.forEach(function (value) {
+      console.log(value.metaData())
+    })
+    this.updatePickGroupMetaData()
   }
 
   handleFirstClick(event: MouseEvent) {
@@ -116,6 +121,27 @@ export class DashboardComponent implements OnInit{
 
       return (event.order * result);
     });
+  }
+
+  updatePickGroupMetaData() {
+    this.pickGroupMetadata = {};
+    if (this.pickRows) {
+      let previousRowData = null;
+      this.pickRows.forEach(function(rowData, idx) {
+        let user = rowData.metaData();
+        if (previousRowData === null) {
+          this.pickGroupMetadata[user] = { index: 0, size: 1 };
+        }
+        else {
+          let previousRowUser = previousRowData.metaData();
+          if (user === previousRowUser)
+            this.pickGroupMetadata[user].size++;
+          else
+            this.pickGroupMetadata[user] = { index: idx, size: 1 };
+        }
+        previousRowData = rowData
+      })
+    }
   }
 
   makeError() {
