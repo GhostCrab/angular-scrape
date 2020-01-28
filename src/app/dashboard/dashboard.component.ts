@@ -39,6 +39,7 @@ export class DashboardComponent implements OnInit{
 
   onChange() {
     this.gameRows = []
+    this.pickRows = []
     Object.values(this.db.games).forEach(function(game) {
       if(game.week === this.week.id) {
         this.gameRows.push(Game.fromDb(game))
@@ -126,37 +127,36 @@ export class DashboardComponent implements OnInit{
   updatePickGroupMetaData() {
     this.pickGroupMetadata = {};
     if (this.pickRows) {
-      let previousRowData = null;
       this.pickRows.forEach(function(rowData, idx) {
         let user = rowData.metaData();
-        if (previousRowData === null) {
-          this.pickGroupMetadata[user] = {index: 0, size: 1, win: 0, loss: 0, total: 0, style: void 0};
+        let groupData = this.pickGroupMetadata[user]
+
+        if (groupData === undefined) {
+          groupData = {index: idx, size: 0, win: 0, loss: 0, total: 0, style: void 0}
+          this.pickGroupMetadata[user] = groupData
         }
-        else {
-          if (user === previousRowData.metaData())
-            this.pickGroupMetadata[user].size++;
-          else
-            this.pickGroupMetadata[user] = {index: idx, size: 1, win: 0, loss: 0, total: 0, style: void 0};
-        }
+
+        groupData.size++;
+
         if (rowData.game.complete) {
-          this.pickGroupMetadata[user].total++
+          groupData.total++
           if (rowData.result() === true) {
-            this.pickGroupMetadata[user].win++
+            groupData.win++
           } else if (rowData.result() === false) {
-            this.pickGroupMetadata[user].loss++
+            groupData.loss++
           }
         }
-        previousRowData = rowData
       }, this)
 
-      this.pickGroupMetadata.forEach(function(pickGroup) {
+      for (let key in this.pickGroupMetadata) {
+        let pickGroup = this.pickGroupMetadata[key]
         if (pickGroup.size === pickGroup.total) {
           if (pickGroup.loss === 0)
             pickGroup.style = 'highlightgreen'
           else
             pickGroup.style = 'highlightred'
         }
-      })
+      }
     }
   }
 

@@ -67,6 +67,6 @@ export class Pick {
   }
 
   result() {
-    this.game.result(this.team)
+    return this.game.result(this.team)
   }
 }
