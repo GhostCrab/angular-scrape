@@ -14,9 +14,10 @@ export class Pick {
   }
 
   static TableCols = [
-      { field: 'user', header: 'User', sortable: true },
-      { field: 'week', header: 'Week', sortable: false },
-      { field: 'pick', header: 'Pick', sortable: true }
+      //{ field: 'user', header: 'User', sortable: true },
+      { field: 'pick', header: 'Pick' },
+      { field: 'opp',  header: 'Opponent' },
+      { field: 'result', header: 'Result' }
     ]
 
   constructor(
@@ -30,20 +31,32 @@ export class Pick {
 
   tableData(field) {
     switch(field) {
-      case 'week': return this.game.week
-      case 'user': return this.user.name
+      case 'week':
+        return this.game.week
+      case 'user':
+        return this.user.name
       case 'pick':
         if(this.team.isOU()) {
           return this.team.abbr + " +" + this.game.ou
-        } else {
-          if(!this.game.fav)
-            return void 0
-          let spread = this.game.spread
-          if(this.game.fav.id !== this.team.id)
-            spread = -spread
-          return this.team.abbr + " " + spread.toString()
         }
-        break
+        if(!this.game.fav)
+          return void 0
+        let spread = this.game.spread
+        if(this.game.fav.id !== this.team.id)
+          spread = -spread
+        if(spread > 0)
+          return this.team.abbr + " +" + spread.toString()
+        return this.team.abbr + " " + spread.toString()
+        
+      case 'opp':
+        if(this.team.isOU()) {
+          return this.game.home.abbr + " @ " + this.game.away.abbr
+        }
+        if(this.team.id === this.game.home.id)
+          return "vs " + this.game.away.abbr
+        return "@ " + this.game.home.abbr
+      case 'result':
+        return this.game.resultStr(this.team)
     }
     return this[field];
   }
@@ -58,7 +71,7 @@ export class Pick {
   tableFieldStyle(field) {
     let classes = 'gameCell'
     switch(field) {
-      case 'pick':
+      case 'result':
         classes += " " + this.game.decideColorTeam(this.team)
         break
     }

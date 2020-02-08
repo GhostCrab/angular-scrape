@@ -76,6 +76,12 @@ export class Game {
     return this.homeScore + this.awayScore
   }
 
+  get und(): Team {
+    if(this.fav.id === this.home.id)
+      return this.away
+    return this.home
+  }
+
   tableData(field) {
     switch(field) {
       case 'time':
@@ -173,5 +179,28 @@ export class Game {
       }
     }
     return void 0
+  }
+
+  resultStr(team) {
+    if(!this.complete)
+      return ""
+
+    if(team.isOU()) {
+      if(this.totalScore < this.ou) return "UND +" + this.totalScore
+      if(this.totalScore > this.ou) return "OVR +" + this.totalScore
+      return "PUSH +" + this.totalScore
+    }
+
+    let teamName, score
+    if(this.fav.id === team.id) {
+      teamName = this.fav.abbr
+      score = -(this.favScore - this.undScore)
+    } else {
+      teamName = this.und.abbr
+      score = -(this.undScore - this.favScore)
+    }
+    if(score > 0)
+      return teamName + " +" + score
+    return teamName + " " + score
   }
 }
